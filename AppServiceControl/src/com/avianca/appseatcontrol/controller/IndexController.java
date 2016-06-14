@@ -57,44 +57,112 @@ public class IndexController extends HttpServlet {
 		String numVoo  = request.getParameter("numVoo");
 		String dtaVoo  = request.getParameter("dtaVoo");
 		String siglaOrigin  = request.getParameter("siglaOrigin");
-		 try {  
-             request.setCharacterEncoding("UTF-8");  
-    response.setCharacterEncoding("UTF-8");  
-    response.setContentType("application/json");   
-    PrintWriter out = response.getWriter();   
+		PrintWriter out =null;
+		response.setContentType("text/html");
+		response.setBufferSize(1024);
+		Passenger[][] seats=null;
+	//	 try {  
+    
+      
+   /* response.setCharacterEncoding("UTF-8");  
+    response.setContentType("application/json");*/   
+    out = response.getWriter();   
     //List<Passenger> passengers = getPassengerList("06","6318","20160525","GRU");
-    List<Passenger> passengers = getPassengerList(siglaOp,numVoo,dtaVoo,siglaOrigin);
-    organizeSeats(passengers);
-             JSONArray jsonArray = new JSONArray();  
-             
-             String json = new Gson().toJson(organizeSeats(passengers));
-            
-             out.print(json);  
-        } catch (Exception e) {  
-             e.printStackTrace();  
-        }  
-		
-		/*try {
-			
-			List<Passenger> passengers = getPassengerList(siglaOp,numVoo,dtaVoo,siglaOrigin);
-			//organizeSeats(getPassengerList("06","6318","20160525","GRU"));
-			
-			response.setContentType("application/csv");
-	        response.setHeader("content-disposition","filename=test.csv"); // set the file name to whatever required..
-	        PrintWriter out = response.getWriter();
-	        out.println("Fila;N° do Acento;Nome;Sobre Nome");
-	        
-	       
-			for (Passenger p : passengers) {
-				System.out.println(p.getSeatNumber());
-				out.println(p.getSeatLine()+";"+p.getSeatNumber()+";"+p.getName()+";"+p.getSurname());
-			}
-			 out.flush();
-		     out.close();
-			
+    List<Passenger> passengers = null;
+	
+		try {
+			passengers = getPassengerList(siglaOp,numVoo,dtaVoo,siglaOrigin);
 		} catch (Exception e) {
-			response.getWriter().append(e.getMessage());
-		}*/
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+    
+    out.println("<HTML>");
+    // Start on the body
+    out.println("<BODY>");
+    out.println("<CENTER>");
+    out.println("<table BORDER=1 CELLPADDING=0 CELLSPACING=0 WIDTH=90% >");   
+    
+    out.print("<tr><th>N°Seat</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>K</th></tr>");
+    int count=0;
+    
+    		if (passengers != null && passengers.size() > 0) {
+    	         seats = organizeSeats(passengers);
+    		
+    	        final int len = seats[0].length;
+    	        for (int i = 0; i < len; i++) {
+    	        	count++;
+    	            // passageiros em todas as filas
+    	            Passenger passA = seats[0][i];
+    	            /* if(passA == null){
+    	            	 passA = new Passenger();
+    	            	 if(passA.getGivenName()==null){
+    	            		 passA.setGivenName("");
+    	            	 }
+    	             }*/
+    	            Passenger passB = seats[1][i];
+    	            /*if(passB == null){
+    	            	passB = new Passenger();
+   	                 }*/
+    	            Passenger passC = seats[2][i];
+    	            /*if(passC == null){
+    	            	passC = new Passenger();
+   	                 }*/
+    	            Passenger passD = seats[3][i];
+    	            /*if(passD == null){
+    	            	passD = new Passenger();
+   	                 }*/
+    	            Passenger passE = seats[4][i];
+    	            /*if(passE == null){
+    	            	passE = new Passenger();
+   	                 }*/
+    	            Passenger passK = seats[5][i]; 
+    	            /*if(passK == null){
+    	            	passK = new Passenger();
+   	                 }*/
+    	            /*if(passA.getName() == null){
+    	            	System.out.println("fçdkajfkçdjfdaçfakd");
+    	            }*/
+    	            
+    	            //System.out.println(passA.toString());
+    	            
+    	              out.print(               "<tr><td>"+count+"</td>"
+    	              		                   + "<td>Nome : "+strFormat(passA == null ? "" : passA.getName()+" \nType " + passA.getType() + " FqtvNumber " + passA.getFqtvNumber() + " SsrDetails " + passA.getSsrDetails(),50)+"</td>"
+    	              		                   + "<td>Nome : "+strFormat(passB == null ? "" : passB.getName()+" \nType " + passB.getType() + " FqtvNumber " + passB.getFqtvNumber() + " SsrDetails " + passB.getSsrDetails(),50)+"</td>"
+    	              				           + "<td>Nome : "+strFormat(passC == null ? "" : passC.getName()+" \nType " + passC.getType() + " FqtvNumber " + passC.getFqtvNumber() + " SsrDetails " + passC.getSsrDetails(),50)+"</td>"
+    	              						   + "<td>Nome : "+strFormat(passD == null ? "" : passD.getName()+" \nType " + passD.getType() + " FqtvNumber " + passD.getFqtvNumber() + " SsrDetails " + passD.getSsrDetails(),50)+"</td>"
+    	              						   + "<td>Nome : "+strFormat(passE == null ? "" : passE.getName()+" \nType " + passE.getType() + " FqtvNumber " + passE.getFqtvNumber() + " SsrDetails " + passE.getSsrDetails(),50)+"</td>"
+    	              						   + "<td>Nome : "+strFormat(passK == null ? "" : passK.getName()+" \nType " + passK.getType() + " FqtvNumber " + passK.getFqtvNumber() + " SsrDetails " + passK.getSsrDetails(),50)+"</td></tr>");
+    	             // out.print("<tr><td>"+1+"</td><td>fdafa</td><td>fadfdafdsafds</td><td>fadfadsfdsafdsa</td><td>fadsfdfdsaf</td><td>fdafdfdsaf</td><td>fdfadfafdsfdasfdaf</td></tr>");
+    		    }
+       		}    		
+	
+    		out.println("</table>");
+            
+            
+         /*  bloco para teste */           
+           /* final int len = seats[0].length;
+            for (int i = 0; i < len; i++) {
+                // passageiros em todas as filas
+                final Passenger passA = seats[0][i], passB = seats[1][i], passC = seats[2][i], passD = seats[3][i], 
+                		passE = seats[4][i], passK = seats[5][i];
+
+                // printa acento:
+                out.print(strFormat((i + 1) + "", 8));
+
+                // printa fileiras
+                out.print(strFormat((passA == null ? "" : passA.getName() + " | " + passA.getType() + " | " + passA.getFqtvNumber() + " | " + passA.getSsrDetails()), 10));
+                out.print(strFormat((passB == null ? "" : passB.getName() + " | " + passB.getType() + " | " + passB.getFqtvNumber() + " | " + passB.getSsrDetails()), 10));
+                out.print(strFormat((passC == null ? "" : passC.getName() + " | " + passC.getType() + " | " + passC.getFqtvNumber() + " | " + passC.getSsrDetails()), 10));
+                out.print(strFormat((passD == null ? "" : passD.getName() + " | " + passD.getType() + " | " + passD.getFqtvNumber() + " | " + passD.getSsrDetails()), 10));
+                out.print(strFormat((passE == null ? "" : passE.getName() + " | " + passE.getType() + " | " + passE.getFqtvNumber() + " | " + passE.getSsrDetails()), 10));
+                out.print(strFormat((passK == null ? "" : passK.getName() + " | " + passK.getType() + " | " + passK.getFqtvNumber() + " | " + passK.getSsrDetails()), 10));
+                out.print("\n");
+            }*/
+    
+    		out.println("</CENTER>");
+            out.println("</BODY></HTML>");	 
 		
 	}
 
@@ -123,7 +191,9 @@ public class IndexController extends HttpServlet {
      * @throws java.lang.Exception
      */
     public List<Passenger> getPassengerList(String _marketingCarrier, String _flightNumber, String _departureDate, String _boardPoint) throws java.lang.Exception {
-        com.amadeus.xml.AmadeusWebServicesStub stub = new com.amadeus.xml.AmadeusWebServicesStub(); //the default implementation should point to the right endpoint
+    	CustomerLevel[] customers = null;
+    	
+    	com.amadeus.xml.AmadeusWebServicesStub stub = new com.amadeus.xml.AmadeusWebServicesStub(); //the default implementation should point to the right endpoint
 
         com.amadeus.xml.vlsslq_06_1_1a.SecurityAuthenticateDocument security_Authenticate64 = (com.amadeus.xml.vlsslq_06_1_1a.SecurityAuthenticateDocument) getTestObject(com.amadeus.xml.vlsslq_06_1_1a.SecurityAuthenticateDocument.class);
         // TODO : Fill in the security_Authenticate64 here
@@ -222,7 +292,13 @@ public class IndexController extends HttpServlet {
         // navega pela estrutura de resposta para obter a relacao de passageiros.
         com.amadeus.xml.apalrr_13_2_1a.DCSLSTGetPassengerListReplyDocument.DCSLSTGetPassengerListReply reply = resplyDoc.getDCSLSTGetPassengerListReply();
         com.amadeus.xml.apalrr_13_2_1a.DCSLSTGetPassengerListReplyDocument.DCSLSTGetPassengerListReply.FlightDetailsGroup flightDetailsGrp = reply.getFlightDetailsGroup();
-        CustomerLevel[] customers = flightDetailsGrp.getCustomerLevelArray();
+        
+        try{
+        
+        customers = flightDetailsGrp.getCustomerLevelArray();
+        }catch(Exception e){
+        	throw e;
+        }
 
         // se nao ha passageiros, entao retorna nulo.
         if (customers == null || customers.length < 1)
@@ -440,6 +516,15 @@ public class IndexController extends HttpServlet {
             e.printStackTrace();
         }
     }
+    private static String strFormat(String _str, int _len) {
+        if (_len < 1)
+            return "";
 
+        if (_str == null || _str.length() == 0)
+            _str = " ";
+
+        StringBuilder text = new StringBuilder(_str).append(repeat(" ", _len));
+        return text.toString().substring(0, _len);
+    }
 
 }

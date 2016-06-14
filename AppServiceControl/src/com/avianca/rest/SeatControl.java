@@ -41,26 +41,52 @@ public class SeatControl {
 	
 	@GET
 	@Path("passengerlist/{sop}/{nv}/{dv}/{so}")
-	@Produces(MediaType.APPLICATION_JSON)
-	
+	@Produces(MediaType.APPLICATION_JSON)	
 	public Response getListPassager(@PathParam("sop")String sop,@PathParam("nv")String nv,@PathParam("dv")String dv,@PathParam("so")String so) {	
-		List<Passenger> passengers=null;
+		List<Passenger> passengers= new ArrayList<>();
 		JSONArray list = new JSONArray();
 		try {			
 			//http://localhost:8080/AppServiceControl/rest/avianca/seatcontrol/passengerlist/O6/6318/20160525/GRU
 			System.out.println(sop+nv+dv+so);
 			/*passengers = getPassengerList("06","6318","20160525","GRU");*/
-			passengers = getPassengerList(sop,nv,dv,so);
+			//passengers = getPassengerList(sop,nv,dv,so);	
+			Passenger[][] seats = organizeSeats(getPassengerList(sop,nv,dv,so));
 			
+			final int len = seats[0].length;
+            for (int i = 0; i < len; i++) {
+            	passengers.add(seats[0][i]);
+            	passengers.add(seats[1][i]);
+            	passengers.add(seats[2][i]);
+            	passengers.add(seats[3][i]);
+            	passengers.add(seats[4][i]);
+            	passengers.add(seats[5][i]);
+            	
+            }
 			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return Response.ok().entity(e.getMessage()).build();
 		}
 		return Response.ok().entity(new GenericEntity<List<Passenger>>(passengers) {}).build();
 
 	}
+	
+	@GET
+	@Path("passengerlistarray/{sop}/{nv}/{dv}/{so}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getListPassagerObj(@PathParam("sop")String sop,@PathParam("nv")String nv,@PathParam("dv")String dv,@PathParam("so")String so) {	
+		
+		try {
+			return organizeSeats(getPassengerList(sop,nv,dv,so));
+		} catch (Exception e) {
+			/*return Response.ok().entity(e.getMessage()).build();*/
+			return e.getMessage();
+		}
+
+	}
+	
+	
 	
 	 public List<Passenger> getPassengerList(String _marketingCarrier, String _flightNumber, String _departureDate, String _boardPoint) throws java.lang.Exception {
 	        com.amadeus.xml.AmadeusWebServicesStub stub = new com.amadeus.xml.AmadeusWebServicesStub(); //the default implementation should point to the right endpoint
@@ -211,5 +237,41 @@ public class SeatControl {
 	            throw new java.lang.Exception("Creator not found!");
 	        }
 	    }
+	 
+	 
+	 private Passenger[][] organizeSeats(final List<Passenger> _passengers) {
+	        if (_passengers == null || _passengers.size() < 1)
+	            return null;
+
+	        // identifica as filas, e o maior numero de acento.
+	        int maxInt = 0;
+	        int lastChr = 0;
+	        for (Passenger passenger : _passengers) {
+	            final int number = passenger.getSeatNumber();
+	            final char line = passenger.getSeatLine();
+
+	            if (number > maxInt)
+	                maxInt = number;
+	            if (line > lastChr)
+	                lastChr = line;
+	        }
+
+	        // filas A,B,C,D,E,K = 6
+	        final Passenger[][] seats = new Passenger[6][maxInt];
+
+	        // repassa os passageiros para a estrutura de acentos:
+	        for (Passenger passenger : _passengers) {
+	            // identifica o numero da fila:   A=0, B=1, C=2, D=3, E=4, K=5
+	            int fila = ((int) passenger.getSeatLine().charValue()) - 65; // 65 = A
+	            if (fila == 10)
+	                fila = 5;
+	            int index = passenger.getSeatNumber() - 1;
+
+	            seats[fila][index] = passenger;
+	        }
+
+	        return seats;
+	    }
+
 
 }
