@@ -94,47 +94,31 @@ public class IndexController extends HttpServlet {
     	        for (int i = 0; i < len; i++) {
     	        	count++;
     	            // passageiros em todas as filas
-    	            Passenger passA = seats[0][i];
-    	            /* if(passA == null){
-    	            	 passA = new Passenger();
-    	            	 if(passA.getGivenName()==null){
-    	            		 passA.setGivenName("");
-    	            	 }
-    	             }*/
-    	            Passenger passB = seats[1][i];
-    	            /*if(passB == null){
-    	            	passB = new Passenger();
-   	                 }*/
-    	            Passenger passC = seats[2][i];
-    	            /*if(passC == null){
-    	            	passC = new Passenger();
-   	                 }*/
-    	            Passenger passD = seats[3][i];
-    	            /*if(passD == null){
-    	            	passD = new Passenger();
-   	                 }*/
-    	            Passenger passE = seats[4][i];
-    	            /*if(passE == null){
-    	            	passE = new Passenger();
-   	                 }*/
+    	            Passenger passA = seats[0][i];    	            
+    	            Passenger passB = seats[1][i];    	           
+    	            Passenger passC = seats[2][i];    	            
+    	            Passenger passD = seats[3][i];    	            
+    	            Passenger passE = seats[4][i];    	           
     	            Passenger passK = seats[5][i]; 
-    	            /*if(passK == null){
-    	            	passK = new Passenger();
-   	                 }*/
-    	            /*if(passA.getName() == null){
-    	            	System.out.println("fçdkajfkçdjfdaçfakd");
-    	            }*/
     	            
-    	            //System.out.println(passA.toString());
+    	            out.print(               "<tr><td>"+count+"</td>"
+   		                   + "<td> "+strFormat(passA == null ? "" : passA.getName(),50)+"</td>"
+   		                   + "<td> "+strFormat(passB == null ? "" : passB.getName(),50)+"</td>"
+   				           + "<td> "+strFormat(passC == null ? "" : passC.getName(),50)+"</td>"
+   						   + "<td> "+strFormat(passD == null ? "" : passD.getName(),50)+"</td>"
+   						   + "<td> "+strFormat(passE == null ? "" : passE.getName(),50)+"</td>"
+   						   + "<td> "+strFormat(passK == null ? "" : passK.getName(),50)+"</td></tr>");
+
+    	           
     	            
-    	              out.print(               "<tr><td>"+count+"</td>"
+    	              /*out.print(               "<tr><td>"+count+"</td>"
     	              		                   + "<td>Nome : "+strFormat(passA == null ? "" : passA.getName()+" \nType " + passA.getType() + " FqtvNumber " + passA.getFqtvNumber() + " SsrDetails " + passA.getSsrDetails(),50)+"</td>"
     	              		                   + "<td>Nome : "+strFormat(passB == null ? "" : passB.getName()+" \nType " + passB.getType() + " FqtvNumber " + passB.getFqtvNumber() + " SsrDetails " + passB.getSsrDetails(),50)+"</td>"
     	              				           + "<td>Nome : "+strFormat(passC == null ? "" : passC.getName()+" \nType " + passC.getType() + " FqtvNumber " + passC.getFqtvNumber() + " SsrDetails " + passC.getSsrDetails(),50)+"</td>"
     	              						   + "<td>Nome : "+strFormat(passD == null ? "" : passD.getName()+" \nType " + passD.getType() + " FqtvNumber " + passD.getFqtvNumber() + " SsrDetails " + passD.getSsrDetails(),50)+"</td>"
     	              						   + "<td>Nome : "+strFormat(passE == null ? "" : passE.getName()+" \nType " + passE.getType() + " FqtvNumber " + passE.getFqtvNumber() + " SsrDetails " + passE.getSsrDetails(),50)+"</td>"
     	              						   + "<td>Nome : "+strFormat(passK == null ? "" : passK.getName()+" \nType " + passK.getType() + " FqtvNumber " + passK.getFqtvNumber() + " SsrDetails " + passK.getSsrDetails(),50)+"</td></tr>");
-    	             // out.print("<tr><td>"+1+"</td><td>fdafa</td><td>fadfdafdsafds</td><td>fadfadsfdsafdsa</td><td>fadsfdfdsaf</td><td>fdafdfdsaf</td><td>fdfadfafdsfdasfdaf</td></tr>");
+*/    	             // out.print("<tr><td>"+1+"</td><td>fdafa</td><td>fadfdafdsafds</td><td>fadfadsfdsafdsa</td><td>fadsfdfdsaf</td><td>fdafdfdsaf</td><td>fdfadfafdsfdasfdaf</td></tr>");
     		    }
        		}    		
 	
